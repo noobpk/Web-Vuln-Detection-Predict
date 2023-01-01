@@ -1,0 +1,74 @@
+<div class="content-body">
+    <!-- <div class="row">
+        <div class="col-12">
+            <div class="alert alert-primary" role="alert">
+                <div class="alert-body">
+                    <strong>Info:</strong> Please check the&nbsp;<a class="text-primary"
+                        href="https://pixinvent.com/demo/vuexy-html-bootstrap-admin-template/documentation/documentation-layout-without-menu.html"
+                        target="_blank">Layout without menu documentation</a>&nbsp; for more details.
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+    <!-- search header -->
+    <section id="faq-search-filter">
+        <div class="card faq-search" style="background-image: url('/app-assets/images/banner/banner.png')">
+            <div class="card-body text-center">
+                <!-- main title -->
+                <h2 class="text-primary">Vulnerabilities</h2>
+                {% for item in site.vulnerabilities %}
+                    {%- assign title = item.title | default: node.title -%}
+                    <span class="badge vuln-bage">{{ title }}</span>
+                {% endfor %}
+                <!-- subtitle -->
+                <p class="card-text mb-2"></p>
+                <div class="col-12 d-flex justify-content-center">
+                    <div class="row custom-options-checkable">
+                        <div class="col-md-6 mb-md-0 mb-2">
+                            <input class="custom-option-item-check" id="textRadio" type="radio" name="newAddress"
+                                value="textRadio" checked="">
+                            <label for="textRadio" class="custom-option-item px-2 py-1">
+                                <span class="d-flex align-items-center mb-50">
+                                    <i data-feather='file-text'></i>
+                                    <span class="custom-option-item-title h4 fw-bolder mb-0">Text</span>
+                                </span>
+                            </label>
+                        </div>
+                        <div class="col-md-6 mb-md-0 mb-2">
+                            <input class="custom-option-item-check" id="fileRadio" type="radio" name="newAddress"
+                                value="fileRadio">
+                            <label for="fileRadio" class="custom-option-item px-2 py-1">
+                                <span class="d-flex align-items-center mb-50">
+                                    <i data-feather='file'></i>
+                                    <span class="custom-option-item-title h4 fw-bolder mb-0">File</span>
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <p class="card-text mb-2"></p>
+                <form id="predictForm" class="row gy-1 gx-2">
+                    <div class="col-12 vuln-text-payload">
+                        <div class="input-group input-group-merge">
+                            <div class="input-group-text">
+                                <i data-feather='cloud-snow'></i>
+                            </div>
+                            <input type="text" id="textpayload" name="textpayload" class="form-control" placeholder="Your payload">
+                        </div>
+                    </div>
+                    <div class="col-12 vuln-file-upload">
+                        <input class="form-control" type="file" id="formFile">
+                    </div>
+                    <div class="col-12 text-center">
+                        <button type="submit" class="btn btn-primary me-1 mt-2 waves-effect waves-float waves-light predict-submit">Submit</button>
+                        <button type="reset" class="btn btn-outline-secondary mt-2 waves-effect" data-bs-dismiss="modal" aria-label="Close">
+                            Discard
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+    <!-- /search header -->
+</div>
