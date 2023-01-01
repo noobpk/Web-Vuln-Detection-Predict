@@ -21,6 +21,8 @@
 title: Web Application Vulnerabilities Detection Predict
 email: ltp.noobpk@gmail.com
 
+repository: "noobpk/Web-Vuln-Detection-Predict"
+description: "Deep Learning | Web Application Vulnerabilities Detection Predict"
 baseurl: "" # the subpath of your site, e.g. /blog
 url: ""
 twitter_username: jekyllrb
