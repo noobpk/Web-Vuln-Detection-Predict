@@ -19,6 +19,7 @@
 
     <!-- BEGIN: Vendor CSS-->
     <link rel="stylesheet" type="text/css" href="{{ "/app-assets/vendors/css/vendors.min.css" | relative_url }}">
+    <link rel="stylesheet" type="text/css" href="{{ "/app-assets/vendors/css/extensions/toastr.min.css" | relative_url }}">
     <!-- END: Vendor CSS-->
 
     <!-- BEGIN: Theme CSS-->
@@ -27,10 +28,12 @@
     <link rel="stylesheet" type="text/css" href="{{ "/app-assets/css/colors.css" | relative_url }}">
     <link rel="stylesheet" type="text/css" href="{{ "/app-assets/css/components.css" | relative_url }}">
     <link rel="stylesheet" type="text/css" href="{{ "/app-assets/css/themes/dark-layout.css" | relative_url }}">
+    <link rel="stylesheet" type="text/css" href="{{ "/app-assets/css/themes/bordered-layout.css" | relative_url }}">
     <link rel="stylesheet" type="text/css" href="{{ "/app-assets/css/themes/semi-dark-layout.css" | relative_url }}">
 
     <!-- BEGIN: Page CSS-->
     <link rel="stylesheet" type="text/css" href="{{ "/app-assets/css/core/menu/menu-types/horizontal-menu.css" | relative_url }}">
+    <link rel="stylesheet" type="text/css" href="{{ "/app-assets/css/plugins/extensions/ext-component-toastr.css" | relative_url }}">
     <!-- END: Page CSS-->
 
     <!-- BEGIN: Custom CSS-->
@@ -108,15 +111,12 @@
                             <button class="btn-icon btn btn-primary btn-round btn-sm dropdown-toggle" type="button"
                                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
                                     data-feather="grid"></i></button>
-                            <div class="dropdown-menu dropdown-menu-end"><a class="dropdown-item" href="#"><i
-                                        class="me-1" data-feather="check-square"></i><span
-                                        class="align-middle">Todo</span></a><a class="dropdown-item" href="#"><i
-                                        class="me-1" data-feather="message-square"></i><span
-                                        class="align-middle">Chat</span></a><a class="dropdown-item" href="#"><i
-                                        class="me-1" data-feather="mail"></i><span
-                                        class="align-middle">Email</span></a><a class="dropdown-item" href="#"><i
-                                        class="me-1" data-feather="calendar"></i><span
-                                        class="align-middle">Calendar</span></a></div>
+                            <div class="dropdown-menu dropdown-menu-end">
+                                <a class="dropdown-item" href="#"><i class="me-1" data-feather="check-square"></i>
+                                    <span class="align-middle">API</span></a>
+                                <a class="dropdown-item" href="#"><i class="me-1" data-feather="message-square"></i>
+                                    <span class="align-middle">Web Socket</span></a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -146,6 +146,8 @@
 
     <!-- BEGIN: Page Vendor JS-->
     <script src="{{ "/app-assets/vendors/js/ui/jquery.sticky.js" | relative_url }}"></script>
+    <script src="{{ "/app-assets/vendors/js/extensions/toastr.min.js" | relative_url }}"></script>
+    <script src="https://cdn.socket.io/4.5.0/socket.io.js"></script>
     <!-- END: Page Vendor JS-->
 
     <!-- BEGIN: Theme JS-->
