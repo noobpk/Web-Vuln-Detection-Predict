@@ -59,11 +59,25 @@
                 </ul>
             </div>
             <ul class="nav navbar-nav align-items-center ms-auto">
+                <li class="nav-item d-none d-lg-block">
+                    <div id="api-connect-status" class="avatar bg-light-success me-1">
+                        <div class="avatar-content">
+                            <i data-feather='power'></i>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item d-none d-lg-block">
+                    <div id="websocket-connect-status" class="avatar bg-light-success me-1">
+                        <div class="avatar-content">
+                            <i data-feather='rss'></i>
+                        </div>
+                    </div>
+                </li>
                 <li class="nav-item dropdown dropdown-user"><a class="nav-link dropdown-toggle dropdown-user-link"
                         id="dropdown-user" href="#" data-bs-toggle="dropdown" aria-haspopup="true"
                         aria-expanded="false">
-                        <div class="user-nav d-sm-flex d-none"><span class="user-name fw-bolder">John Doe</span><span
-                                class="user-status">Admin</span></div><span class="avatar"><img class="round"
+                        <div class="user-nav d-sm-flex d-none"><span class="user-name fw-bolder">LTPhuc</span><span
+                                class="user-status">@noobpk</span></div><span class="avatar"><img class="round"
                                 src="{{ "/app-assets//images/portrait/small/avatar-s-11.jpg" | relative_url }}" alt="avatar"
                                 height="40" width="40"><span class="avatar-status-online"></span></span>
                     </a>
@@ -112,14 +126,9 @@
                                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
                                     data-feather="grid"></i></button>
                             <div class="dropdown-menu dropdown-menu-end">
-                                <a class="dropdown-item" href="#"><span id="api-connect-status" class="badge bg-success">
-                                    <i data-feather='smile'></i>
-                                    <span>API</span>
-                                </span></a>
-                                <a class="dropdown-item" href="#"><span id="websocket-connect-status" class="badge bg-success">
-                                    <i data-feather='smile'></i>
-                                    <span>Web Socket</span>
-                                </span></a>
+                                <a class="dropdown-item" href="https://github.com/noobpk/Web-Vuln-Detection-Predict" target="_blank">
+                                    <i data-feather='github'></i>
+                                    <span class="align-middle">Repository</span></a>
                             </div>
                         </div>
                     </div>

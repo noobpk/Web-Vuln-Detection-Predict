@@ -48,10 +48,10 @@
       let apiConnectStatus = document.getElementById('api-connect-status');
 
       // Add a new class to the element
-      apiConnectStatus.classList.add('bg-danger');
+      apiConnectStatus.classList.add('bg-light-danger');
 
       // Remove a class from the element
-      apiConnectStatus.classList.remove('bg-success');
+      apiConnectStatus.classList.remove('bg-light-success');
     });
   }, 3000)
 
@@ -74,10 +74,10 @@
     let websocketConnectStatus = document.getElementById('websocket-connect-status');
 
     // Add a new class to the element
-    websocketConnectStatus.classList.add('bg-danger');
+    websocketConnectStatus.classList.add('bg-light-danger');
 
     // Remove a class from the element
-    websocketConnectStatus.classList.remove('bg-success');
+    websocketConnectStatus.classList.remove('bg-light-success');
   });
 
   socket.on('message', function(data) {
@@ -215,7 +215,7 @@
                               </div>`).html();
         }   
       }else if(data.status == 'Fail') {
-        toastr['info']('⚠️ '+ data.message, 'Info!', {
+        toastr['warning']('⚠️ '+ data.message, 'Warning!', {
           closeButton: true,
           tapToDismiss: false,
           rtl: isRtl
@@ -244,7 +244,7 @@
     // Your code to submit the form goes here
     if(document.getElementById('textRadio').checked) {
       if(!text_value) {
-        toastr['error']('⚠️ Please input your payload.', 'Error!', {
+        toastr['warning']('⚠️ Please input your payload.', 'Warning!', {
           closeButton: true,
           tapToDismiss: false,
           rtl: isRtl
@@ -254,7 +254,7 @@
       }
     }else if(document.getElementById('fileRadio').checked) {
       if(!files[0]) {
-        toastr['error']('⚠️ Please select your file.', 'Error!', {
+        toastr['warning']('⚠️ Please select your file.', 'Warning!', {
           closeButton: true,
           tapToDismiss: false,
           rtl: isRtl
