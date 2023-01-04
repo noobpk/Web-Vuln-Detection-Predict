@@ -7,7 +7,12 @@
   PLACE HERE YOUR OWN JAVASCRIPT CODE IF NEEDED
   WE WILL RELEASE FUTURE UPDATES SO IN ORDER TO NOT OVERWRITE YOUR JAVASCRIPT CODE PLEASE CONSIDER WRITING YOUR SCRIPT HERE.  */
 
+  function htmlEntities(str) {
+    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
   var isRtl = $('html').attr('data-textdirection') === 'rtl';
+  var api = 'https://noobpk-zany-space-barnacle-j46p44jvv7hqrgq-5000.preview.app.github.dev';
+
   // On load Toast
   setTimeout(function () {
     toastr['success'](
@@ -20,46 +25,89 @@
       }
     );
   }, 2000);
+
+  // On check API
+  setTimeout(function () {
+    fetch(api)
+    .then((response) => {})
+    .then((data) => {
+      toastr['success']('🔮 Connected to API', 'Success!', {
+        closeButton: true,
+        tapToDismiss: false,
+        rtl: isRtl
+      });
+    })
+    .catch((error) => {
+      toastr['error']('❌ '+ error, 'Error!', {
+        closeButton: true,
+        tapToDismiss: false,
+        rtl: isRtl
+      });
+
+      // Handle the connection error
+      let apiConnectStatus = document.getElementById('api-connect-status');
+
+      // Add a new class to the element
+      apiConnectStatus.classList.add('bg-danger');
+
+      // Remove a class from the element
+      apiConnectStatus.classList.remove('bg-success');
+    });
+  }, 3000)
+
   //Socket.io
-  var socket = io.connect('https://noobpk-solid-lamp-9q997w55xq537xjr-5000.preview.app.github.dev');
-  // socket.emit('after connect', function(connectMsg) {
-  //   $('#log').append('<br>' + $('<div/>').text('What is the intention of the code: ' + connectMsg.data).html());
-  //   console.log(connectMsg.data)
-  //   alert(connectMsg.data);
-  // });
-  // socket.emit('message', function(msg) {
-  //   $('#log').append('<br>' + $('<div/>').text(msg.data).html());
-  //   alert(msg);
-  // })
+  var socket = io.connect(api);
 
   socket.on('connect', function() {
     console.log('Connected to the server');
 
-    // Send a message to the server every 10 seconds
+    // Load first message
+    socket.emit('requestData');
+    // Send a message to the server every 40 seconds
     setInterval(function() {
       socket.emit('requestData');
-    }, 10000);
+    }, 40000);
   });
   
+  socket.on('connect_error', function(error) {
+    // Handle the connection error
+    let websocketConnectStatus = document.getElementById('websocket-connect-status');
+
+    // Add a new class to the element
+    websocketConnectStatus.classList.add('bg-danger');
+
+    // Remove a class from the element
+    websocketConnectStatus.classList.remove('bg-success');
+  });
+
   socket.on('message', function(data) {
     console.log(data); // Outputs "Hello from the server!"
   });
 
   socket.on('responseData', function(msg) {
     // Handle the data received from the server
-    console.log(msg);
-    $('#payload').prepend(`<div class="alert alert-primary" role="alert">
-                                <h4 class="alert-heading">Accuracy: </h4>
-                                <div class="alert-body">${msg.data}</div>
-                            </div>
-                        </div>
-                    </div>`).html();
+    const rec_data = msg.data;
+    let html = '';
+    for (const key in rec_data) {
+      let alert = '';
+
+      if(rec_data[key] >= 0.8) {
+        alert = 'alert-danger';
+      }else if(rec_data[key] >= 0.5) {
+        alert = 'alert-warning';
+      }else if(rec_data[key] < 0.5) {
+        alert = 'alert-primary';
+      }
+
+      html += `<div class="alert ${alert}" role="alert">`
+      html += `<h4 class="alert-heading">Accuracy: ${rec_data[key]}</h4>`
+      html += `<div class="alert-body">${htmlEntities(key)}</div>`
+      html += `</div>`;
+    }
+
+    $('#other-predictions').html(html);
   });
 
-  socket.on('notification', function(data) {
-    // Display the notification to the user
-    console.log(data);
-  });
   // Select the element
   let vulns_bage = document.querySelectorAll('.vuln-bage');
   // Define an array of colors
@@ -87,6 +135,10 @@
     $('.vuln-file-upload').css({
        display: 'none'
     });
+
+    // Remove enctype in form 
+    $('#predictForm').removeAttr('enctype');
+
   });
 
   $('#fileRadio').on('click', function () {
@@ -99,16 +151,32 @@
     $('.vuln-file-upload').css({
       display: 'inline'
     });
+
+    // Add enctype in form 
+    $('#predictForm').attr('enctype', 'application/x-www-form-urlencoded');
   });
 
-  const predict = (data) => {
-    fetch('https://noobpk-solid-lamp-9q997w55xq537xjr-5000.preview.app.github.dev/predict', {
-      method: 'POST',
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({"data": data})
-    }).then((res) => res.json())
+  const predict = (data, type) => {
+    var formdata = new FormData();
+    if(type === 'text') {
+      let body = JSON.stringify({"data": data});
+      var requestOptions = {
+        method: 'POST',
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: body,
+      };
+    } else {
+      formdata.append("file", data);
+      var requestOptions = {
+        method: 'POST',
+        body: formdata,
+      };
+    }
+
+    fetch(api+'/predict', requestOptions)
+    .then((res) => res.json())
     .then((data) => {
       if(data.status == 'Success') {
         if(data.accuracy >= 0.8) {
@@ -118,12 +186,10 @@
             rtl: isRtl
           });
 
-          $('#payload').append(`<div class="alert alert-danger" role="alert">
+          $('#your-predictions').append(`<div class="alert alert-danger" role="alert">
                                   <h4 class="alert-heading">Accuracy: ${data.accuracy}</h4>
                                 <div class="alert-body">${data.prediction}</div>
-                            </div>
-                        </div>
-                    </div>`).html();
+                              </div>`).html();
         }else if(data.accuracy >= 0.5) {
           toastr['success']('Accuracy: '+data.accuracy, '✨✨✨', {
             closeButton: true,
@@ -131,12 +197,10 @@
             rtl: isRtl
           });
 
-          $('#payload').append(`<div class="alert alert-warning" role="alert">
+          $('#your-predictions').append(`<div class="alert alert-warning" role="alert">
                                   <h4 class="alert-heading">Accuracy: ${data.accuracy}</h4>
                                 <div class="alert-body">${data.prediction}</div>
-                            </div>
-                        </div>
-                    </div>`).html();
+                              </div>`).html();
 
         }else if(data.accuracy < 0.5) {
           toastr['success']('Accuracy: '+data.accuracy, '✨', {
@@ -145,23 +209,26 @@
             rtl: isRtl
           });
 
-          $('#payload').append(`<div class="alert alert-primary" role="alert">
+          $('#your-predictions').append(`<div class="alert alert-primary" role="alert">
                                   <h4 class="alert-heading">Accuracy: ${data.accuracy}</h4>
                                 <div class="alert-body">${data.prediction}</div>
-                            </div>
-                        </div>
-                    </div>`).html();
+                              </div>`).html();
         }   
       }else if(data.status == 'Fail') {
-        toastr['info']('❌ Please input your payload.', 'Info!', {
+        toastr['info']('⚠️ '+ data.message, 'Info!', {
           closeButton: true,
           tapToDismiss: false,
           rtl: isRtl
         });
       }
     })
-    .catch(
-      error => console.log(error)
+    .catch((error) => {
+      toastr['error']('❌ '+ error, 'Error!', {
+        closeButton: true,
+        tapToDismiss: false,
+        rtl: isRtl
+      });
+    }
     );
   };
 
@@ -177,22 +244,24 @@
     // Your code to submit the form goes here
     if(document.getElementById('textRadio').checked) {
       if(!text_value) {
-        toastr['error']('❌ Please input your payload.', 'Error!', {
+        toastr['error']('⚠️ Please input your payload.', 'Error!', {
           closeButton: true,
           tapToDismiss: false,
           rtl: isRtl
         });
+      } else {
+        predict(text_value, 'text');
       }
-      predict(text_value);
     }else if(document.getElementById('fileRadio').checked) {
       if(!files[0]) {
-        toastr['error']('❌ Please select your file.', 'Error!', {
+        toastr['error']('⚠️ Please select your file.', 'Error!', {
           closeButton: true,
           tapToDismiss: false,
           rtl: isRtl
         });
+      } else {
+        predict(files[0]);
       }
-      predict(files[0]);
     }
   });
 })(window);
