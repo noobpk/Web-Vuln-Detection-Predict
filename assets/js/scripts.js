@@ -46,12 +46,14 @@
 
       // Handle the connection error
       let apiConnectStatus = document.getElementById('api-connect-status');
-
+      
       // Add a new class to the element
       apiConnectStatus.classList.add('bg-light-danger');
 
       // Remove a class from the element
       apiConnectStatus.classList.remove('bg-light-success');
+
+
     });
   }, 3000)
 
@@ -72,12 +74,15 @@
   socket.on('connect_error', function(error) {
     // Handle the connection error
     let websocketConnectStatus = document.getElementById('websocket-connect-status');
+    let websocketSpinner = document.getElementById('websocket-spinner');
 
     // Add a new class to the element
     websocketConnectStatus.classList.add('bg-light-danger');
+    websocketSpinner.classList.add('text-danger');
 
     // Remove a class from the element
     websocketConnectStatus.classList.remove('bg-light-success');
+    websocketSpinner.classList.add('text-success');
   });
 
   socket.on('message', function(data) {
@@ -179,6 +184,12 @@
     .then((res) => res.json())
     .then((data) => {
       if(data.status == 'Success') {
+        // store old data
+        const storeData = {
+          [data.accuracy]: data.prediction
+        };
+        localStorage.setItem('your_predictions', JSON.stringify(storeData));
+        
         if(data.accuracy >= 0.8) {
           toastr['success']('Accuracy: '+data.accuracy, '✨✨✨✨✨', {
             closeButton: true,
@@ -190,6 +201,7 @@
                                   <h4 class="alert-heading">Accuracy: ${data.accuracy}</h4>
                                 <div class="alert-body">${data.prediction}</div>
                               </div>`).html();
+
         }else if(data.accuracy >= 0.5) {
           toastr['success']('Accuracy: '+data.accuracy, '✨✨✨', {
             closeButton: true,
