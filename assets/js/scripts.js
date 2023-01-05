@@ -11,7 +11,7 @@
     return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   }
   var isRtl = $('html').attr('data-textdirection') === 'rtl';
-  var api = 'https://noobpk-zany-space-barnacle-j46p44jvv7hqrgq-5000.preview.app.github.dev';
+  var api = 'https://web-vuln-detection.hptcybersec.com';
 
   // On load Toast
   setTimeout(function () {
@@ -96,11 +96,11 @@
     for (const key in rec_data) {
       let alert = '';
 
-      if(rec_data[key] >= 0.8) {
+      if(rec_data[key] >= 80) {
         alert = 'alert-danger';
-      }else if(rec_data[key] >= 0.5) {
+      }else if(rec_data[key] >= 50) {
         alert = 'alert-warning';
-      }else if(rec_data[key] < 0.5) {
+      }else if(rec_data[key] < 50) {
         alert = 'alert-primary';
       }
 
@@ -190,7 +190,7 @@
         };
         localStorage.setItem('your_predictions', JSON.stringify(storeData));
         
-        if(data.accuracy >= 0.8) {
+        if(data.accuracy >= 80) {
           toastr['success']('Accuracy: '+data.accuracy, '✨✨✨✨✨', {
             closeButton: true,
             tapToDismiss: false,
@@ -202,7 +202,7 @@
                                 <div class="alert-body">${data.prediction}</div>
                               </div>`).html();
 
-        }else if(data.accuracy >= 0.5) {
+        }else if(data.accuracy >= 50) {
           toastr['success']('Accuracy: '+data.accuracy, '✨✨✨', {
             closeButton: true,
             tapToDismiss: false,
@@ -214,7 +214,7 @@
                                 <div class="alert-body">${data.prediction}</div>
                               </div>`).html();
 
-        }else if(data.accuracy < 0.5) {
+        }else if(data.accuracy < 50) {
           toastr['success']('Accuracy: '+data.accuracy, '✨', {
             closeButton: true,
             tapToDismiss: false,
